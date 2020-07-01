@@ -29,11 +29,11 @@ rough_simulation = SolarSimulation(
 bad_simulation = SolarSimulation(
     SolarPanel(4, 0.2),  # Area of 4 m^2, efficiency of 20%
     ColdReservoir(290), # Cold reservoir in thermal equilibrium with environment at 290K
-    Pump(150, 10), # 150 Joule per cycle, 10 cycles per second
+    Pump(200, 10), # 200 Joule per cycle, 10 cycles per second
     StorageTank(300, 1) # Storage tank of 1 kg of water with initial temperature of 300K
 )
 
-def run_simulation(simulation, max_temp = 400, max_cycles = 1000):
+def run_simulation(simulation, max_temp = 400, max_cycles = 10000):
 
     net_energy = [simulation.net_energy]
     energy_harvested = [simulation.storage.energy_level]
