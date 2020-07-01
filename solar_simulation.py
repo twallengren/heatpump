@@ -38,14 +38,15 @@ class SolarSimulation:
         self.panel = SolarPanel(1, 0.2) # Area of 1 m^2, efficiency of 20%
         self.coldres = ColdReservoir(290) # Cold reservoir in thermal equilibrium with environment at 290K
         self.pump = Pump(100) # 100 Joules per cycle
-        self.storage = StorageTank(300, 200) # Storage tank of 200 kg of water with initial temperature of 300K
+        self.storage = StorageTank(300, 50) # Storage tank of 200 kg of water with initial temperature of 300K
         self.coefficient_of_performance = self.coldres.temp/(self.storage.temp - self.coldres.temp)
 
     def iterate_cycle(self):
+        """
+
+        :return: returns the time required for the solar panel in the system to harvest the energy for the current cycle
+        """
 
         energy_into_storage = self.coefficient_of_performance*self.pump.energy_per_cycle
         self.storage.deposit_energy(energy_into_storage)
         self.coefficient_of_performance = self.coldres.temp/(self.storage.temp - self.coldres.temp)
-        heat_from_panel = energy_into_storage - self.pump.energy_per_cycle
-        cycle_time = self.panel.get_time_for_energy(heat_from_panel)
-        return cycle_time
