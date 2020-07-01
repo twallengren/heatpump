@@ -40,6 +40,7 @@ class StorageTank:
         if (self.state == LIQUID) | (self.state == GAS):
             self.temp = (energy + self.heatcap * self.temp) / self.heatcap
             if self.temp >= boiling_temp:
+                self.temp = boiling_temp
                 self.state = VAPORIZING
                 self.heatcap = heat_of_vap * self.kilos
         else:
