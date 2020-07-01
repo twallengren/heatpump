@@ -13,7 +13,8 @@ class SolarSimulation:
     reservoir by the pump), W is the work done by the pump, and Qh is the energy deposited into the hot reservoir.
 
     The 'coefficient of performance' is the ratio of benefit over cost, which in this case is Qh/W. We note that
-    multiplying the coefficient of performance by the work done by the pump yields the heat deposited.
+    multiplying the coefficient of performance by the work done by the pump yields the amount of heat deposited into
+    the hot reservoir.
 
     The first law of thermodynamics tells us Qc + W = Qh, or W = Qh - Qc so that the coefficient of performance can be
     rewritten as Qh/(Qh-Qc) or 1/(1-Qc/Qh).
