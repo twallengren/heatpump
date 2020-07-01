@@ -55,18 +55,36 @@ class SolarSimulation:
         self.pump = pump
         self.storage = storage_tank
         self.coefficient_of_performance = cold_reservoir.temp/(storage_tank.temp - cold_reservoir.temp)
+        self.time_elapsed = 1 / self.pump.cycles_per_second
         self.net_energy = 0
 
     def iterate_cycle(self):
 
-        time_elapsed = 1 / self.pump.cycles_per_second
-        self.panel.elapse_time(time_elapsed)
+        # solar panel builds energy over each cycle
+        self.panel.elapse_time(self.time_elapsed)
+
+        # pump operates every cycle even if no heat transfer occurs
         self.net_energy -= self.pump.energy_per_cycle
 
+        # theoretical energy that should be pumped into the hot reservoir
         energy_into_storage = self.coefficient_of_performance*self.pump.energy_per_cycle
+
+        # energy required from panel to pump energy into the hot reservoir
         energy_required_from_panel = energy_into_storage - self.pump.energy_per_cycle
+
+        # cycle only transfers heat if the panel has absorbed the minimum required energy
         if self.panel.total_energy_absorbed > energy_required_from_panel:
+
+            # drain energy from panel
             self.panel.remove_energy(energy_required_from_panel)
+
+            # never needed to explicitly model energy passing through cold reservoir/pump
+
+            # add resulting energy to storage
             self.storage.deposit_energy(energy_into_storage)
+
+            # update COP because storage tank temperature is now slightly larger
             self.coefficient_of_performance = self.coldres.temp/(self.storage.temp - self.coldres.temp)
+
+            # track net change in energy
             self.net_energy += energy_into_storage
