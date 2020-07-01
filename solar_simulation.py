@@ -9,8 +9,8 @@ class SolarSimulation:
     """
     Simulation of heat pump from a cold reservoir at temperature Tc to a hot reservoir at temperature Th.
 
-    Qc is the energy absorbed by the cold reservoir from the solar panel, W is the work done by the pump, and Qh is the
-    energy deposited into the hot reservoir.
+    Qc is the energy absorbed by the cold reservoir from the solar panel (and the energy extracted out of the cold
+    reservoir by the pump), W is the work done by the pump, and Qh is the energy deposited into the hot reservoir.
 
     The 'coefficient of performance' is the ratio of benefit over cost, which in this case is Qh/W. We note that
     multiplying the coefficient of performance by the work done by the pump yields the heat deposited.
