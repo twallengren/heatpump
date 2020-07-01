@@ -6,7 +6,7 @@ class SolarPanel:
     """
 
     solar_constant = 1370 # watts/meter^2
-    total_energy_harvested = 0 # joules
+    total_energy_absorbed = 0 # joules
 
     def __init__(self, area, efficiency):
 
@@ -18,5 +18,13 @@ class SolarPanel:
         self.area = area
         self.efficiency = efficiency
 
+    def elapse_time(self, time_step):
+        energy_increment = self.solar_constant * self.area * self.efficiency * time_step
+        self.total_energy_absorbed += energy_increment
+        return energy_increment
+
     def get_time_for_energy(self, energy):
         return energy/(self.solar_constant*self.area*self.efficiency)
+
+    def remove_energy(self, energy):
+        self.total_energy_absorbed -= energy
