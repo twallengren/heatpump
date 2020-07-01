@@ -24,8 +24,9 @@ class SolarSimulation:
 
     In this simulation, we assume heat is efficiently extracted from the cold reservoir such that its temperature Tc
     remains constant. We also assume that the pump does the same amount of work W on each cycle. The hot reservoir will
-    increase in temperature as heat is pumped into it, so we assume it is a 200kg tank of water and use the known
-    specific heat capacity of water to compute the temperature increase during each cycle.
+    increase in temperature as heat is pumped into it, so we assume it is a tank of water and use the known values for
+    specific heat of liquid, heat of vaporization, and specific heat of gas to handle temperature/phase changes (this
+    simulation only covers liquid => gas).
 
     We assume the pump is operating at the theoretical upper efficiency bound. So for each iteration, we multiply the
     work done by the pump by the coefficient of performance to find the energy deposited into the hot reservoir. Then we
@@ -33,23 +34,34 @@ class SolarSimulation:
     next cycle.
     """
 
-    def __init__(self):
+    def __init__(self, solar_panel, cold_reservoir, pump, storage_tank):
 
-        self.panel = SolarPanel(1, 0.2) # Area of 1 m^2, efficiency of 20%
-        self.coldres = ColdReservoir(290) # Cold reservoir in thermal equilibrium with environment at 290K
-        self.pump = Pump(100, 10) # 100 Joules per cycle, 10 cycles per second
-        self.storage = StorageTank(300, 50) # Storage tank of 100 kg of water with initial temperature of 300K
-        self.coefficient_of_performance = self.coldres.temp/(self.storage.temp - self.coldres.temp)
+        if not isinstance(solar_panel, SolarPanel):
+            raise TypeError("solar_panel should be an instance of SolarPanel")
+        if not isinstance(cold_reservoir, ColdReservoir):
+            raise TypeError("cold_reservoir should be an instance of ColdReservoir")
+        if not isinstance(pump, Pump):
+            raise TypeError("pump should be an instance of Pump")
+        if not isinstance(storage_tank, StorageTank):
+            raise TypeError("storage_tank should be an instance of StorageTank")
+
+        self.panel = solar_panel
+        self.coldres = cold_reservoir
+        self.pump = pump
+        self.storage = storage_tank
+        self.coefficient_of_performance = cold_reservoir.temp/(storage_tank.temp - cold_reservoir.temp)
         self.net_energy = 0
 
     def iterate_cycle(self):
 
+        time_elapsed = 1 / self.pump.cycles_per_second
+        self.panel.elapse_time(time_elapsed)
         self.net_energy -= self.pump.energy_per_cycle
-        time_elapsed = 1/self.pump.cycles_per_second
-        energy_increment = self.panel.elapse_time(time_elapsed)
-        self.net_energy += energy_increment
+
         energy_into_storage = self.coefficient_of_performance*self.pump.energy_per_cycle
-        if self.panel.total_energy_absorbed > energy_into_storage:
-            self.panel.remove_energy(energy_into_storage)
+        energy_required_from_panel = energy_into_storage - self.pump.energy_per_cycle
+        if self.panel.total_energy_absorbed > energy_required_from_panel:
+            self.panel.remove_energy(energy_required_from_panel)
             self.storage.deposit_energy(energy_into_storage)
             self.coefficient_of_performance = self.coldres.temp/(self.storage.temp - self.coldres.temp)
+            self.net_energy += energy_into_storage
