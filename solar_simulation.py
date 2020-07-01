@@ -32,6 +32,11 @@ class SolarSimulation:
     work done by the pump by the coefficient of performance to find the energy deposited into the hot reservoir. Then we
     update the temperature of the hot reservoir which forces us to recompute the coefficient of performance before the
     next cycle.
+
+    Since the pump uses a fixed amount of energy each cycle and we use that to compute what *should* be deposited into
+    the hot reservoir, we can use the first law to say the cold reservoir must have Qc = Qh - W energy available for
+    the pump to transfer heat on a given cycle. Whether or not the energy is available depends on how quickly the solar
+    panel is able to absorb energy.
     """
 
     def __init__(self, solar_panel, cold_reservoir, pump, storage_tank):

@@ -7,6 +7,6 @@ class ColdReservoir:
     def __init__(self, temperature):
 
         if temperature <= freezing_temp:
-            raise ValueError("Cold reservoir temperature must be greater than 273.1 K.")
+            raise ValueError(f'Cold reservoir temperature must be greater than {freezing_temp} K.')
 
         self.temp = temperature

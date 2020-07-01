@@ -14,7 +14,7 @@ class StorageTank:
 
         # check for acceptable method parameters
         if initial_temperature <= freezing_temp:
-            raise ValueError("Initial temperature of storage tank must be greater than 273.1 K.")
+            raise ValueError(f'Initial temperature of storage tank must be greater than {freezing_temp} K.')
         if kilos_of_water <= 0:
             raise ValueError("Amount of water in storage tank must be positive.")
 
@@ -38,7 +38,7 @@ class StorageTank:
         self.energy_level += energy
 
         if (self.state == LIQUID) | (self.state == GAS):
-            self.temp = (energy + self.heatcap*self.temp)/self.heatcap
+            self.temp = (energy + self.heatcap * self.temp) / self.heatcap
             if self.temp >= boiling_temp:
                 self.state = VAPORIZING
                 self.heatcap = heat_of_vap * self.kilos

@@ -1,3 +1,5 @@
+# Author: Toren Wallengren
+
 freezing_temp = 273.1 # kelvin
 boiling_temp = 373.1 # kelvin
 specific_heat_liquid = 4186 # joule/kg
