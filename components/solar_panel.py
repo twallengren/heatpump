@@ -22,3 +22,6 @@ class SolarPanel:
         energy_harvested = self.solar_constant*self.area*self.efficiency*timestep
         self.total_energy_harvested += energy_harvested
         return energy_harvested
+
+    def get_time_for_energy(self, energy):
+        return energy/(self.solar_constant*self.area*self.efficiency)
