@@ -2,6 +2,9 @@
 
 class ColdReservoir:
 
-    def __init__(self):
+    energy_level = 0
+    entropy_created = 0
 
-        pass
+    def __init__(self, temperature):
+
+        self.temp = temperature

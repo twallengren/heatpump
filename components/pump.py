@@ -2,6 +2,6 @@
 
 class Pump:
 
-    def __init__(self):
+    def __init__(self, energy_per_cycle):
 
-        pass
+        self.energy_per_cycle = energy_per_cycle
