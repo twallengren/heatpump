@@ -22,7 +22,6 @@ class SolarPanel:
     def elapse_time(self, time_step):
         energy_increment = solar_constant * self.area * self.efficiency * time_step
         self.total_energy_absorbed += energy_increment
-        return energy_increment
 
     def get_time_for_energy(self, energy):
         return energy/(solar_constant * self.area * self.efficiency)
