@@ -1,11 +1,12 @@
 # Author: Toren Wallengren
 
+from components.constants import *
+
 class SolarPanel:
     """
     Represents an individual solar panel with known area & efficiency
     """
 
-    solar_constant = 1370 # watts/meter^2
     total_energy_absorbed = 0 # joules
 
     def __init__(self, area, efficiency):
@@ -19,12 +20,12 @@ class SolarPanel:
         self.efficiency = efficiency
 
     def elapse_time(self, time_step):
-        energy_increment = self.solar_constant * self.area * self.efficiency * time_step
+        energy_increment = solar_constant * self.area * self.efficiency * time_step
         self.total_energy_absorbed += energy_increment
         return energy_increment
 
     def get_time_for_energy(self, energy):
-        return energy/(self.solar_constant*self.area*self.efficiency)
+        return energy/(solar_constant * self.area * self.efficiency)
 
     def remove_energy(self, energy):
         self.total_energy_absorbed -= energy
