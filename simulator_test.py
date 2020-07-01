@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 smooth_simulation = SolarSimulation(
     SolarPanel(4, 0.2),  # Area of 4 m^2, efficiency of 20%
     ColdReservoir(290), # Cold reservoir in thermal equilibrium with environment at 290K
-    Pump(3, 10), # 3 Joule per cycle, 10 cycles per second
+    Pump(4, 10), # 4 Joule per cycle, 10 cycles per second
     StorageTank(300, 1) # Storage tank of 1 kg of water with initial temperature of 300K
 )
 
@@ -33,10 +33,10 @@ bad_simulation = SolarSimulation(
     StorageTank(300, 1) # Storage tank of 1 kg of water with initial temperature of 300K
 )
 
-def run_simulation(simulation, max_temp = 400, max_cycles = 10000):
+def run_simulation(simulation, max_temp = 400, max_cycles = 100000):
 
-    net_energy = [simulation.net_energy]
-    energy_harvested = [simulation.storage.energy_level]
+    net_energy = [simulation.net_energy / 1000]
+    energy_harvested = [simulation.storage.energy_level / 1000]
     storage_tank_temp = [simulation.storage.temp]
     coefficient_of_performance = [simulation.coefficient_of_performance]
     count = [0]
@@ -44,17 +44,14 @@ def run_simulation(simulation, max_temp = 400, max_cycles = 10000):
 
     while (simulation.storage.temp < max_temp) & (idx < max_cycles):
         simulation.iterate_cycle()
-        count.append(idx)
-        net_energy.append(simulation.net_energy)
-        energy_harvested.append(simulation.storage.energy_level)
+        count.append(idx / simulation.pump.cycles_per_second / 60)
+        net_energy.append(simulation.net_energy / 1000)
+        energy_harvested.append(simulation.storage.energy_level / 1000)
         storage_tank_temp.append(simulation.storage.temp)
         coefficient_of_performance.append(simulation.coefficient_of_performance)
         idx += 1
 
-    net_energy_in_kj = [e / 1000 for e in net_energy]
-    energy_harvested_in_kj = [e / 1000 for e in energy_harvested]
-
-    return simulation, count, net_energy_in_kj, energy_harvested_in_kj, storage_tank_temp, coefficient_of_performance
+    return simulation, count, net_energy, energy_harvested, storage_tank_temp, coefficient_of_performance
 
 def plot_results(fignum, suptitle, count, net_energy_in_kj, energy_harvested_in_kj, storage_tank_temp, coefficient_of_performance):
 
@@ -73,13 +70,13 @@ def plot_results(fignum, suptitle, count, net_energy_in_kj, energy_harvested_in_
     plt.plot(count, storage_tank_temp)
     plt.grid(True)
     plt.title("Temperature of Storage Tank")
-    plt.xlabel("Number of Cycles")
+    plt.xlabel("Time [minutes]")
     plt.ylabel("Temperature [K]")
     plt.subplot(224)
     plt.plot(count, coefficient_of_performance)
     plt.grid(True)
     plt.title("Performance Coefficient")
-    plt.xlabel("Number of Cycles")
+    plt.xlabel("Time [minutes]")
     plt.ylabel("COP [unitless]")
     plt.suptitle(suptitle)
 
