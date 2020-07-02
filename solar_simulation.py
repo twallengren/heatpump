@@ -38,6 +38,8 @@ class SolarSimulation:
     the hot reservoir, we can use the first law to say the cold reservoir must have Qc = Qh - W energy available for
     the pump to transfer heat on a given cycle. Whether or not the energy is available depends on how quickly the solar
     panel is able to absorb energy.
+
+    All calculations are in kilograms, meters, seconds, & kelvin (so energy is in joules).
     """
 
     net_energy_joules = 0
@@ -69,10 +71,10 @@ class SolarSimulation:
         self.net_energy_joules -= self.pump.energy_per_cycle_joules
 
         # theoretical energy that should be pumped into the hot reservoir
-        energy_into_storage = self.coefficient_of_performance*self.pump.energy_per_cycle_joules
+        energy_into_storage_joules = self.coefficient_of_performance*self.pump.energy_per_cycle_joules
 
         # energy required from panel to pump energy into the hot reservoir
-        energy_required_from_panel_joules = energy_into_storage - self.pump.energy_per_cycle_joules
+        energy_required_from_panel_joules = energy_into_storage_joules - self.pump.energy_per_cycle_joules
 
         # cycle only transfers heat if the panel has absorbed the minimum required energy
         if self.panel.total_energy_absorbed_joules > energy_required_from_panel_joules:
@@ -83,10 +85,10 @@ class SolarSimulation:
             # never needed to explicitly model energy passing through cold reservoir/pump
 
             # add resulting energy to storage
-            self.storage.deposit_energy(energy_into_storage)
+            self.storage.deposit_energy_joules(energy_into_storage_joules)
 
             # update COP because storage tank temperature is now slightly larger
             self.coefficient_of_performance = self.cold_reservoir.temp_kelvin/(self.storage.temp_kelvin - self.cold_reservoir.temp_kelvin)
 
             # track net change in energy
-            self.net_energy_joules += energy_into_storage
+            self.net_energy_joules += energy_into_storage_joules

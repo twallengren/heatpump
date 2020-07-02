@@ -33,18 +33,18 @@ class StorageTank:
         self.temp_kelvin = initial_temp_kelvin
         self.kilograms_of_water = kilograms_of_water
 
-    def deposit_energy(self, energy):
+    def deposit_energy_joules(self, energy_joules):
 
-        self.energy_level_joules += energy
+        self.energy_level_joules += energy_joules
 
         if (self.state == LIQUID) | (self.state == GAS):
-            self.temp_kelvin = (energy + self.heat_capacity * self.temp_kelvin) / self.heat_capacity
+            self.temp_kelvin = (energy_joules + self.heat_capacity * self.temp_kelvin) / self.heat_capacity
             if self.temp_kelvin >= boiling_temp_kelvin:
                 self.temp_kelvin = boiling_temp_kelvin
                 self.state = VAPORIZING
                 self.heat_capacity = heat_of_vap_water * self.kilograms_of_water
         else:
-            self.vap_heat_added_joules += energy
+            self.vap_heat_added_joules += energy_joules
             if self.vap_heat_added_joules >= self.heat_capacity:
                 self.state = GAS
                 self.heat_capacity = specific_heat_gas_water * self.kilograms_of_water

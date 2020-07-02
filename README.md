@@ -2,7 +2,8 @@
 
 *REQUIRES PYTHON3 AND MATPLOTLIB*
 
-Run simulator_test.py for the full simulation.
+Run simulator_test.py for the full simulation. Units within the simulation are standard m-kg-s (so energy is in Joules).
+The exception is the final plot which represents energy in kilojoules, but all underlying calculations are in joules.
 
 Simulation of heat pump from a cold reservoir at temperature Tc to a hot reservoir at temperature Th.
 

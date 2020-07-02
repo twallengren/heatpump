@@ -4,7 +4,7 @@ from components.constants import *
 
 class SolarPanel:
     """
-    Represents an individual solar panel with known area_sq_meters & efficiency
+    Represents an individual solar panel with known area_sq_meters & efficiency.
     """
 
     total_energy_absorbed_joules = 0 # joules
