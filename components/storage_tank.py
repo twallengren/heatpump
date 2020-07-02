@@ -39,7 +39,7 @@ class StorageTank:
 
         if (self.state == LIQUID) | (self.state == GAS):
             self.temp_kelvin = (energy_joules + self.heat_capacity * self.temp_kelvin) / self.heat_capacity
-            if self.temp_kelvin >= boiling_temp_kelvin:
+            if (self.temp_kelvin >= boiling_temp_kelvin) & (self.state == LIQUID):
                 self.temp_kelvin = boiling_temp_kelvin
                 self.state = VAPORIZING
                 self.heat_capacity = heat_of_vap_water * self.kilograms_of_water
