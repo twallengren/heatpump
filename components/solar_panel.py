@@ -12,9 +12,9 @@ class SolarPanel:
     def __init__(self, area_sq_meters, efficiency):
 
         if area_sq_meters <= 0:
-            raise ValueError("Solar panel area_sq_meters must be positive.")
-        if (efficiency <= 0) | (efficiency > 1):
-            raise ValueError("Solar panel efficiency must be positive and less than 1.")
+            raise ValueError("Solar panel area_sq_meters must be greater than 0.")
+        if (efficiency <= 0.0) | (efficiency > 1.0):
+            raise ValueError("Solar panel efficiency must be greater than 0 and less than or equal to 1.")
 
         self.area_sq_meters = area_sq_meters
         self.efficiency = efficiency
