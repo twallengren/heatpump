@@ -35,15 +35,27 @@ class StorageTank:
 
     def deposit_energy_joules(self, energy_joules):
 
+        # track total energy added
         self.energy_level_joules += energy_joules
 
+        # liquid and gas phases update temperature using the same equation (w/ different heat capacity)
         if (self.state == LIQUID) | (self.state == GAS):
+
+            # increase temperature based on dQ = m*C*(Tf - T0)
             self.temp_kelvin = (energy_joules + self.heat_capacity * self.temp_kelvin) / self.heat_capacity
+
+            # check for liquid => gas phase transition
             if (self.temp_kelvin >= boiling_temp_kelvin) & (self.state == LIQUID):
                 self.temp_kelvin = boiling_temp_kelvin
                 self.state = VAPORIZING
                 self.heat_capacity = heat_of_vap_water * self.kilograms_of_water
+
+        # water in tank is in the process of vaporizing
         else:
+
+            # stays in this state (at a constant temperature) until enough energy has been added
+            # we track how much energy has been added while in this state with self.vap_heat_added_joules
+            # the amount of energy that needs to be added before transitioning to gas is stored in self.heat_capacity
             self.vap_heat_added_joules += energy_joules
             if self.vap_heat_added_joules >= self.heat_capacity:
                 self.state = GAS
