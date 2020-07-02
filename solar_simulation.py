@@ -40,6 +40,16 @@ class SolarSimulation:
     panel is able to absorb energy.
 
     All calculations are in kilograms, meters, seconds, & kelvin (so energy is in joules).
+
+    SolarPanel (solar_panel.py) - tracks how much solar energy has been absorbed to determine whether heat transfer
+                                    occurs on a given cycle.
+
+    ColdReservoir (cold_reservoir.py) - tracks temperature (kelvin) of cold reservoir.
+
+    Pump (pump.py) - represents energy consumption specs of pump that moves heat from cold to hot reservoir.
+
+    StorageTank (storage_tank.py) - tracks temperature (kelvin) and heat energy added (joules) to tank of water which
+                                    may undergo a liquid => gas phase transformation.
     """
 
     net_energy_joules = 0
