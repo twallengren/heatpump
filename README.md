@@ -1,5 +1,7 @@
 # PassiveLogic Coding Test
 
+*REQUIRES PYTHON3 AND MATPLOTLIB*
+
 Run simulator_test.py for the full simulation.
 
 Simulation of heat pump from a cold reservoir at temperature Tc to a hot reservoir at temperature Th.
