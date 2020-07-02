@@ -16,7 +16,7 @@ class StorageTank:
         if initial_temp_kelvin <= freezing_temp_kelvin:
             raise ValueError(f'Initial temperature of storage tank must be greater than {freezing_temp_kelvin} K.')
         if kilograms_of_water <= 0:
-            raise ValueError("Amount of water in storage tank must be positive.")
+            raise ValueError("Amount of water in storage tank must be greater than 0.")
 
         # determine state of system
         if initial_temp_kelvin < boiling_temp_kelvin:

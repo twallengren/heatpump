@@ -10,9 +10,9 @@ class Pump:
         """
 
         if energy_per_cycle_joules <= 0:
-            raise ValueError("Pump energy per cycle must be positive.")
+            raise ValueError("Pump energy per cycle must be greater than 0.")
         if cycles_per_second <= 0:
-            raise ValueError("Pump cycles per second must be positive.")
+            raise ValueError("Pump cycles per second must be greater than 0.")
 
         self.energy_per_cycle_joules = energy_per_cycle_joules
         self.cycles_per_second = cycles_per_second
