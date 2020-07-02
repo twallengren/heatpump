@@ -35,45 +35,45 @@ bad_simulation = SolarSimulation(
 
 def run_simulation(simulation, max_temp = 400, max_cycles = 10000):
 
-    net_energy = [simulation.net_energy / 1000]
-    energy_harvested = [simulation.storage.energy_level / 1000]
-    storage_tank_temp = [simulation.storage.temp]
+    net_energy_kilojoules = [simulation.net_energy_joules / 1000]
+    energy_harvested_kilojoules = [simulation.storage.energy_level_joules / 1000]
+    storage_tank_temp_kelvin = [simulation.storage.temp_kelvin]
     coefficient_of_performance = [simulation.coefficient_of_performance]
-    count = [0]
+    time = [0]
     idx = 1
 
-    while (simulation.storage.temp < max_temp) & (idx < max_cycles):
+    while (simulation.storage.temp_kelvin < max_temp) & (idx < max_cycles):
         simulation.iterate_cycle()
-        count.append(idx / simulation.pump.cycles_per_second / 60)
-        net_energy.append(simulation.net_energy / 1000)
-        energy_harvested.append(simulation.storage.energy_level / 1000)
-        storage_tank_temp.append(simulation.storage.temp)
+        time.append(idx / simulation.pump.cycles_per_second / 60)
+        net_energy_kilojoules.append(simulation.net_energy_joules / 1000)
+        energy_harvested_kilojoules.append(simulation.storage.energy_level_joules / 1000)
+        storage_tank_temp_kelvin.append(simulation.storage.temp_kelvin)
         coefficient_of_performance.append(simulation.coefficient_of_performance)
         idx += 1
 
-    return simulation, count, net_energy, energy_harvested, storage_tank_temp, coefficient_of_performance
+    return simulation, time, net_energy_kilojoules, energy_harvested_kilojoules, storage_tank_temp_kelvin, coefficient_of_performance
 
-def plot_results(fignum, suptitle, count, net_energy_in_kj, energy_harvested_in_kj, storage_tank_temp, coefficient_of_performance):
+def plot_results(fignum, suptitle, time, net_energy_in_kj, energy_harvested_in_kj, storage_tank_temp, coefficient_of_performance):
 
     plt.figure(fignum)
     plt.subplot(221)
-    plt.plot(count, net_energy_in_kj)
+    plt.plot(time, net_energy_in_kj)
     plt.grid(True)
     plt.title("Net Energy Harvested")
     plt.ylabel("Energy [KJ]")
     plt.subplot(222)
-    plt.plot(count, energy_harvested_in_kj)
+    plt.plot(time, energy_harvested_in_kj)
     plt.grid(True)
     plt.title("Energy Delta in Storage Tank")
     plt.ylabel("Energy [KJ]")
     plt.subplot(223)
-    plt.plot(count, storage_tank_temp)
+    plt.plot(time, storage_tank_temp)
     plt.grid(True)
     plt.title("Temperature of Storage Tank")
     plt.xlabel("Time [minutes]")
     plt.ylabel("Temperature [K]")
     plt.subplot(224)
-    plt.plot(count, coefficient_of_performance)
+    plt.plot(time, coefficient_of_performance)
     plt.grid(True)
     plt.title("Performance Coefficient")
     plt.xlabel("Time [minutes]")
@@ -82,13 +82,13 @@ def plot_results(fignum, suptitle, count, net_energy_in_kj, energy_harvested_in_
 
 if __name__ == '__main__':
 
-    smooth_simulation, count, net, harvested, temp, cop = run_simulation(smooth_simulation)
-    plot_results(1, "Optimized Pump", count, net, harvested, temp, cop)
+    smooth_simulation, time, net, harvested, temp, cop = run_simulation(smooth_simulation)
+    plot_results(1, "Optimized Pump", time, net, harvested, temp, cop)
 
-    rough_simulation, count, net, harvested, temp, cop = run_simulation(rough_simulation)
-    plot_results(2, "Functional Pump", count, net, harvested, temp, cop)
+    rough_simulation, time, net, harvested, temp, cop = run_simulation(rough_simulation)
+    plot_results(2, "Functional Pump", time, net, harvested, temp, cop)
 
-    bad_simulation, count, net, harvested, temp, cop = run_simulation(bad_simulation)
-    plot_results(3, "Bad Pump", count, net, harvested, temp, cop)
+    bad_simulation, time, net, harvested, temp, cop = run_simulation(bad_simulation)
+    plot_results(3, "Bad Pump", time, net, harvested, temp, cop)
 
     plt.show()

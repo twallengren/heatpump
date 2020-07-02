@@ -7,44 +7,44 @@ class StorageTank:
     Represents tank of water to store heat energy.
     """
 
-    energy_level = 0 # joules
-    vap_heat_added = 0 # joules
+    energy_level_joules = 0
+    vap_heat_added_joules = 0
 
-    def __init__(self, initial_temperature, kilos_of_water):
+    def __init__(self, initial_temp_kelvin, kilograms_of_water):
 
         # check for acceptable method parameters
-        if initial_temperature <= freezing_temp:
-            raise ValueError(f'Initial temperature of storage tank must be greater than {freezing_temp} K.')
-        if kilos_of_water <= 0:
+        if initial_temp_kelvin <= freezing_temp_kelvin:
+            raise ValueError(f'Initial temperature of storage tank must be greater than {freezing_temp_kelvin} K.')
+        if kilograms_of_water <= 0:
             raise ValueError("Amount of water in storage tank must be positive.")
 
         # determine state of system
-        if initial_temperature < boiling_temp:
+        if initial_temp_kelvin < boiling_temp_kelvin:
             self.state = LIQUID
-            self.heatcap = specific_heat_liquid * kilos_of_water
-        elif initial_temperature == boiling_temp:
+            self.heat_capacity = specific_heat_liquid_water * kilograms_of_water
+        elif initial_temp_kelvin == boiling_temp_kelvin:
             self.state = VAPORIZING
-            self.heatcap = heat_of_vap * kilos_of_water
+            self.heat_capacity = heat_of_vap_water * kilograms_of_water
         else:
             self.state = GAS
-            self.heatcap = specific_heat_gas * kilos_of_water
+            self.heat_capacity = specific_heat_gas_water * kilograms_of_water
 
         # set remaining instance variables
-        self.temp = initial_temperature
-        self.kilos = kilos_of_water
+        self.temp_kelvin = initial_temp_kelvin
+        self.kilograms_of_water = kilograms_of_water
 
     def deposit_energy(self, energy):
 
-        self.energy_level += energy
+        self.energy_level_joules += energy
 
         if (self.state == LIQUID) | (self.state == GAS):
-            self.temp = (energy + self.heatcap * self.temp) / self.heatcap
-            if self.temp >= boiling_temp:
-                self.temp = boiling_temp
+            self.temp_kelvin = (energy + self.heat_capacity * self.temp_kelvin) / self.heat_capacity
+            if self.temp_kelvin >= boiling_temp_kelvin:
+                self.temp_kelvin = boiling_temp_kelvin
                 self.state = VAPORIZING
-                self.heatcap = heat_of_vap * self.kilos
+                self.heat_capacity = heat_of_vap_water * self.kilograms_of_water
         else:
-            self.vap_heat_added += energy
-            if self.vap_heat_added >= self.heatcap:
+            self.vap_heat_added_joules += energy
+            if self.vap_heat_added_joules >= self.heat_capacity:
                 self.state = GAS
-                self.heatcap = specific_heat_gas * self.kilos
+                self.heat_capacity = specific_heat_gas_water * self.kilograms_of_water

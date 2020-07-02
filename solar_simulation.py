@@ -40,6 +40,8 @@ class SolarSimulation:
     panel is able to absorb energy.
     """
 
+    net_energy_joules = 0
+
     def __init__(self, solar_panel, cold_reservoir, pump, storage_tank):
 
         if not isinstance(solar_panel, SolarPanel):
@@ -52,32 +54,31 @@ class SolarSimulation:
             raise TypeError("storage_tank should be an instance of StorageTank")
 
         self.panel = solar_panel
-        self.coldres = cold_reservoir
+        self.cold_reservoir = cold_reservoir
         self.pump = pump
         self.storage = storage_tank
-        self.coefficient_of_performance = cold_reservoir.temp/(storage_tank.temp - cold_reservoir.temp)
-        self.time_elapsed = 1 / self.pump.cycles_per_second
-        self.net_energy = 0
+        self.coefficient_of_performance = cold_reservoir.temp_kelvin/(storage_tank.temp_kelvin - cold_reservoir.temp_kelvin)
+        self.time_elapsed_seconds = 1 / self.pump.cycles_per_second
 
     def iterate_cycle(self):
 
         # solar panel builds energy over each cycle
-        self.panel.elapse_time(self.time_elapsed)
+        self.panel.elapse_time_seconds(self.time_elapsed_seconds)
 
         # pump operates every cycle even if no heat transfer occurs
-        self.net_energy -= self.pump.energy_per_cycle
+        self.net_energy_joules -= self.pump.energy_per_cycle_joules
 
         # theoretical energy that should be pumped into the hot reservoir
-        energy_into_storage = self.coefficient_of_performance*self.pump.energy_per_cycle
+        energy_into_storage = self.coefficient_of_performance*self.pump.energy_per_cycle_joules
 
         # energy required from panel to pump energy into the hot reservoir
-        energy_required_from_panel = energy_into_storage - self.pump.energy_per_cycle
+        energy_required_from_panel_joules = energy_into_storage - self.pump.energy_per_cycle_joules
 
         # cycle only transfers heat if the panel has absorbed the minimum required energy
-        if self.panel.total_energy_absorbed > energy_required_from_panel:
+        if self.panel.total_energy_absorbed_joules > energy_required_from_panel_joules:
 
             # drain energy from panel
-            self.panel.remove_energy(energy_required_from_panel)
+            self.panel.remove_energy_joules(energy_required_from_panel_joules)
 
             # never needed to explicitly model energy passing through cold reservoir/pump
 
@@ -85,7 +86,7 @@ class SolarSimulation:
             self.storage.deposit_energy(energy_into_storage)
 
             # update COP because storage tank temperature is now slightly larger
-            self.coefficient_of_performance = self.coldres.temp/(self.storage.temp - self.coldres.temp)
+            self.coefficient_of_performance = self.cold_reservoir.temp_kelvin/(self.storage.temp_kelvin - self.cold_reservoir.temp_kelvin)
 
             # track net change in energy
-            self.net_energy += energy_into_storage
+            self.net_energy_joules += energy_into_storage
