@@ -33,7 +33,7 @@ bad_simulation = SolarSimulation(
     StorageTank(300, 1) # Storage tank of 1 kg of water with initial temperature of 300K
 )
 
-def run_simulation(simulation, max_temp = 400, max_cycles = 100000):
+def run_simulation(simulation, max_temp = 400, max_cycles = 10000):
 
     net_energy = [simulation.net_energy / 1000]
     energy_harvested = [simulation.storage.energy_level / 1000]
