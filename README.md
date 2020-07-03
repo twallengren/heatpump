@@ -19,7 +19,7 @@ rewritten as Qh/(Qh-Qc) or 1/(1-Qc/Qh).
 
 The second law of thermodynamics tells us the entropy increase of the hot reservoir must be greater than or equal to
 the entropy decrease of the cold reservoir, or Qh/Th >= Qc/Tc so Tc/Th >= Qc/Qh. So we have 1-Qc/Qh >= 1-Tc/Th, so
-1/(1-Qc/Qh) <= 1/(1-Tc/Th) = Tc/(Th - Tc) which is a theoretical upper bound on the coefficient of performance.
+1/(1-Qc/Qh) <= 1/(1-Tc/Th) = Th/(Th - Tc) which is a theoretical upper bound on the coefficient of performance.
 
 In this simulation, we assume heat is efficiently extracted from the cold reservoir such that its temperature Tc
 remains constant. We also assume that the pump does the same amount of work W on each cycle. The hot reservoir will

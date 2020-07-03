@@ -21,7 +21,7 @@ class SolarSimulation:
 
     The second law of thermodynamics tells us the entropy increase of the hot reservoir must be greater than or equal to
     the entropy decrease of the cold reservoir, or Qh/Th >= Qc/Tc so Tc/Th >= Qc/Qh. So we have 1-Qc/Qh >= 1-Tc/Th, so
-    1/(1-Qc/Qh) <= 1/(1-Tc/Th) = Tc/(Th - Tc) which is a theoretical upper bound on the coefficient of performance.
+    1/(1-Qc/Qh) <= 1/(1-Tc/Th) = Th/(Th - Tc) which is a theoretical upper bound on the coefficient of performance.
 
     In this simulation, we assume heat is efficiently extracted from the cold reservoir such that its temperature Tc
     remains constant. We also assume that the pump does the same amount of work W on each cycle. The hot reservoir will
@@ -69,7 +69,7 @@ class SolarSimulation:
         self.cold_reservoir = cold_reservoir
         self.pump = pump
         self.storage = storage_tank
-        self.coefficient_of_performance = cold_reservoir.temp_kelvin/(storage_tank.temp_kelvin - cold_reservoir.temp_kelvin)
+        self.coefficient_of_performance = storage_tank.temp_kelvin/(storage_tank.temp_kelvin - cold_reservoir.temp_kelvin)
         self.time_elapsed_seconds = 1 / self.pump.cycles_per_second
 
     def iterate_cycle(self):
@@ -98,7 +98,7 @@ class SolarSimulation:
             self.storage.deposit_energy_joules(energy_into_storage_joules)
 
             # update COP because storage tank temperature is now slightly larger
-            self.coefficient_of_performance = self.cold_reservoir.temp_kelvin/(self.storage.temp_kelvin - self.cold_reservoir.temp_kelvin)
+            self.coefficient_of_performance = self.storage.temp_kelvin/(self.storage.temp_kelvin - self.cold_reservoir.temp_kelvin)
 
             # track net change in energy
             self.net_energy_joules += energy_into_storage_joules
