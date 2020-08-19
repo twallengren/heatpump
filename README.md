@@ -1,4 +1,4 @@
-# PassiveLogic Coding Test
+# Heat Pump Simulation
 
 *REQUIRES PYTHON3 AND MATPLOTLIB*
 
