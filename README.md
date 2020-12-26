@@ -1,4 +1,4 @@
-# Heat Pump Simulation
+# Basic Heat Pump and Storage Simulation
 
 *REQUIRES PYTHON3 AND MATPLOTLIB*
 
